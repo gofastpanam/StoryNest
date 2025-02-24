@@ -1,10 +1,5 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 # docs
 docs/
-
-# setup
-SETUP.md
-SETUP2.md
 
 # dependencies
 node_modules/
