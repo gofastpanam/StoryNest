@@ -5,16 +5,17 @@ import {
   sendPasswordResetEmail,
   User,
   UserCredential,
+  AuthError as FirebaseAuthError,
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
-export interface AuthError {
+// Our custom error interface
+export interface CustomAuthError {
   code: string;
   message: string;
 }
 
 // Authentication service that handles all interactions with Firebase Auth
-
 export class AuthService {
   /**
    * Register a new user
@@ -26,7 +27,10 @@ export class AuthService {
     try {
       return await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      throw this.handleError(error);
+      if (error && typeof error === 'object' && 'code' in error) {
+        throw this.handleError(error as FirebaseAuthError);
+      }
+      throw this.createError('auth/unknown', 'An unknown error occurred');
     }
   }
 
@@ -40,7 +44,10 @@ export class AuthService {
     try {
       return await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      throw this.handleError(error);
+      if (error && typeof error === 'object' && 'code' in error) {
+        throw this.handleError(error as FirebaseAuthError);
+      }
+      throw this.createError('auth/unknown', 'An unknown error occurred');
     }
   }
 
@@ -52,7 +59,10 @@ export class AuthService {
     try {
       await signOut(auth);
     } catch (error) {
-      throw this.handleError(error);
+      if (error && typeof error === 'object' && 'code' in error) {
+        throw this.handleError(error as FirebaseAuthError);
+      }
+      throw this.createError('auth/unknown', 'An unknown error occurred');
     }
   }
 
@@ -65,7 +75,10 @@ export class AuthService {
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
-      throw this.handleError(error);
+      if (error && typeof error === 'object' && 'code' in error) {
+        throw this.handleError(error as FirebaseAuthError);
+      }
+      throw this.createError('auth/unknown', 'An unknown error occurred');
     }
   }
 
@@ -78,45 +91,50 @@ export class AuthService {
   }
 
   /**
+   * Create a standardized error object
+   * @param code - Error code
+   * @param message - Error message
+   * @returns CustomAuthError
+   */
+  private static createError(code: string, message: string): CustomAuthError {
+    return { code, message };
+  }
+
+  /**
    * Standardized Firebase error handling
    * @param error - Firebase error
-   * @returns AuthError
+   * @returns CustomAuthError
    */
-  private static handleError(error: any): AuthError {
-    const authError: AuthError = {
-      code: 'auth/unknown',
-      message: 'An unknown error occurred.',
-    };
+  private static handleError(error: FirebaseAuthError): CustomAuthError {
+    const code = error.code || 'auth/unknown';
+    let message = 'An unknown error occurred';
 
-    if (error.code) {
-      authError.code = error.code;
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          authError.message = 'This email is already in use.';
-          break;
-        case 'auth/invalid-email':
-          authError.message = 'The email address is invalid.';
-          break;
-        case 'auth/operation-not-allowed':
-          authError.message = 'This operation is not allowed.';
-          break;
-        case 'auth/weak-password':
-          authError.message = 'The password is too weak.';
-          break;
-        case 'auth/user-disabled':
-          authError.message = 'This account has been disabled.';
-          break;
-        case 'auth/user-not-found':
-          authError.message = 'No user found with this email.';
-          break;
-        case 'auth/wrong-password':
-          authError.message = 'Incorrect password.';
-          break;
-        default:
-          authError.message = error.message;
-      }
+    switch (code) {
+      case 'auth/email-already-in-use':
+        message = 'This email is already in use';
+        break;
+      case 'auth/invalid-email':
+        message = 'The email address is invalid';
+        break;
+      case 'auth/operation-not-allowed':
+        message = 'This operation is not allowed';
+        break;
+      case 'auth/weak-password':
+        message = 'The password is too weak';
+        break;
+      case 'auth/user-disabled':
+        message = 'This account has been disabled';
+        break;
+      case 'auth/user-not-found':
+        message = 'No user found with this email';
+        break;
+      case 'auth/wrong-password':
+        message = 'Incorrect password';
+        break;
+      default:
+        message = error.message || message;
     }
 
-    return authError;
+    return this.createError(code, message);
   }
 }

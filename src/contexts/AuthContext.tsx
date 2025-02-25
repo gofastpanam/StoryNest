@@ -43,38 +43,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Auth methods
   const login = async (email: string, password: string) => {
-    try {
-      const { user } = await AuthService.login(email, password);
-      setUser(user);
-    } catch (error) {
-      throw error;
-    }
+    const { user } = await AuthService.login(email, password);
+    setUser(user);
   };
 
   const register = async (email: string, password: string) => {
-    try {
-      const { user } = await AuthService.register(email, password);
-      setUser(user);
-    } catch (error) {
-      throw error;
-    }
+    const { user } = await AuthService.register(email, password);
+    setUser(user);
   };
 
   const logout = async () => {
-    try {
-      await AuthService.logout();
-      setUser(null);
-    } catch (error) {
-      throw error;
-    }
+    await AuthService.logout();
+    setUser(null);
   };
 
   const resetPassword = async (email: string) => {
-    try {
-      await AuthService.resetPassword(email);
-    } catch (error) {
-      throw error;
-    }
+    await AuthService.resetPassword(email);
   };
 
   const value = {
