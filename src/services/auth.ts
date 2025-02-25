@@ -4,7 +4,7 @@ import {
   signOut,
   sendPasswordResetEmail,
   User,
-  UserCredential
+  UserCredential,
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
@@ -85,7 +85,7 @@ export class AuthService {
   private static handleError(error: any): AuthError {
     const authError: AuthError = {
       code: 'auth/unknown',
-      message: 'An unknown error occurred.'
+      message: 'An unknown error occurred.',
     };
 
     if (error.code) {
