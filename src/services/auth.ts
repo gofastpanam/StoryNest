@@ -25,10 +25,16 @@ export class AuthService {
    */
   static async register(email: string, password: string): Promise<UserCredential> {
     try {
-      return await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Attempting to register with:', { email });
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Registration successful');
+      return result;
     } catch (error) {
+      console.error('Registration error:', error);
       if (error && typeof error === 'object' && 'code' in error) {
-        throw this.handleError(error as FirebaseAuthError);
+        const firebaseError = error as FirebaseAuthError;
+        console.error('Firebase error code:', firebaseError.code);
+        throw this.handleError(firebaseError);
       }
       throw this.createError('auth/unknown', 'An unknown error occurred');
     }
@@ -42,10 +48,16 @@ export class AuthService {
    */
   static async login(email: string, password: string): Promise<UserCredential> {
     try {
-      return await signInWithEmailAndPassword(auth, email, password);
+      console.log('Attempting to login with:', { email });
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      console.log('Login successful');
+      return result;
     } catch (error) {
+      console.error('Login error:', error);
       if (error && typeof error === 'object' && 'code' in error) {
-        throw this.handleError(error as FirebaseAuthError);
+        const firebaseError = error as FirebaseAuthError;
+        console.error('Firebase login error code:', firebaseError.code);
+        throw this.handleError(firebaseError);
       }
       throw this.createError('auth/unknown', 'An unknown error occurred');
     }
@@ -106,35 +118,18 @@ export class AuthService {
    * @returns CustomAuthError
    */
   private static handleError(error: FirebaseAuthError): CustomAuthError {
-    const code = error.code || 'auth/unknown';
-    let message = 'An unknown error occurred';
+    console.log('Handling Firebase error:', error);
+    
+    const errorMap: { [key: string]: string } = {
+      'auth/email-already-in-use': 'This email is already registered.',
+      'auth/invalid-email': 'The email address is not valid.',
+      'auth/operation-not-allowed': 'Email/password accounts are not enabled. Please enable them in the Firebase Console.',
+      'auth/weak-password': 'The password is too weak.',
+      'auth/configuration-not-found': 'Authentication configuration is missing. Please check Firebase Console settings.',
+      'auth/network-request-failed': 'Network error. Please check your connection.',
+    };
 
-    switch (code) {
-      case 'auth/email-already-in-use':
-        message = 'This email is already in use';
-        break;
-      case 'auth/invalid-email':
-        message = 'The email address is invalid';
-        break;
-      case 'auth/operation-not-allowed':
-        message = 'This operation is not allowed';
-        break;
-      case 'auth/weak-password':
-        message = 'The password is too weak';
-        break;
-      case 'auth/user-disabled':
-        message = 'This account has been disabled';
-        break;
-      case 'auth/user-not-found':
-        message = 'No user found with this email';
-        break;
-      case 'auth/wrong-password':
-        message = 'Incorrect password';
-        break;
-      default:
-        message = error.message || message;
-    }
-
-    return this.createError(code, message);
+    const message = errorMap[error.code] || error.message || 'An unknown error occurred';
+    return this.createError(error.code, message);
   }
 }

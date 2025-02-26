@@ -32,33 +32,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Listen to auth state changes
   useEffect(() => {
+    console.log('Setting up auth state listener');
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
       setUser(user);
       setLoading(false);
     });
 
     // Cleanup subscription
-    return unsubscribe;
+    return () => {
+      console.log('Cleaning up auth state listener');
+      unsubscribe();
+    };
   }, []);
 
   // Auth methods
   const login = async (email: string, password: string) => {
-    const { user } = await AuthService.login(email, password);
-    setUser(user);
+    try {
+      console.log('AuthContext: Attempting login');
+      const { user } = await AuthService.login(email, password);
+      console.log('AuthContext: Login successful, user:', user?.email);
+      setUser(user);
+    } catch (error) {
+      console.error('AuthContext: Login error:', error);
+      throw error;
+    }
   };
 
   const register = async (email: string, password: string) => {
-    const { user } = await AuthService.register(email, password);
-    setUser(user);
+    try {
+      console.log('AuthContext: Attempting registration');
+      const { user } = await AuthService.register(email, password);
+      console.log('AuthContext: Registration successful, user:', user?.email);
+      setUser(user);
+    } catch (error) {
+      console.error('AuthContext: Registration error:', error);
+      throw error;
+    }
   };
 
   const logout = async () => {
-    await AuthService.logout();
-    setUser(null);
+    try {
+      console.log('AuthContext: Attempting logout');
+      await AuthService.logout();
+      console.log('AuthContext: Logout successful');
+      setUser(null);
+    } catch (error) {
+      console.error('AuthContext: Logout error:', error);
+      throw error;
+    }
   };
 
   const resetPassword = async (email: string) => {
-    await AuthService.resetPassword(email);
+    try {
+      console.log('AuthContext: Attempting password reset');
+      await AuthService.resetPassword(email);
+      console.log('AuthContext: Password reset email sent');
+    } catch (error) {
+      console.error('AuthContext: Password reset error:', error);
+      throw error;
+    }
   };
 
   const value = {
@@ -70,5 +103,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resetPassword,
   };
 
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
