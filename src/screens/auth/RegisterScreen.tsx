@@ -28,7 +28,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   const handleRegister = async () => {
     console.log('Register button pressed');
     console.log('Form state:', { email, password, confirmPassword, isLoading });
-    
+
     setError(null);
 
     if (!email || !password || !confirmPassword) {
@@ -79,10 +79,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         {error && <Text style={styles.errorText}>{error}</Text>}
 
         <TextInput
-          style={[
-            styles.input,
-            error ? styles.inputError : null
-          ]}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Email"
           value={email}
           onChangeText={(text) => {
@@ -96,10 +93,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         />
 
         <TextInput
-          style={[
-            styles.input,
-            error ? styles.inputError : null
-          ]}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Password"
           value={password}
           onChangeText={(text) => {
@@ -112,10 +106,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         />
 
         <TextInput
-          style={[
-            styles.input,
-            error ? styles.inputError : null
-          ]}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Confirm Password"
           value={confirmPassword}
           onChangeText={(text) => {
@@ -139,8 +130,8 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.linkButton} 
+        <TouchableOpacity
+          style={styles.linkButton}
           onPress={() => navigation.navigate('Login')}
           disabled={isLoading}
         >

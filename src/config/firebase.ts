@@ -26,9 +26,7 @@ const validateConfig = () => {
     .map(([key]) => key);
 
   if (missingFields.length > 0) {
-    throw new Error(
-      `Missing Firebase configuration fields: ${missingFields.join(', ')}`
-    );
+    throw new Error(`Missing Firebase configuration fields: ${missingFields.join(', ')}`);
   }
 };
 

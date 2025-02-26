@@ -26,7 +26,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const handleLogin = async () => {
     console.log('Login button pressed');
     console.log('Form state:', { email, password, isLoading });
-    
+
     setError(null);
 
     if (!email || !password) {
@@ -65,10 +65,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         {error && <Text style={styles.errorText}>{error}</Text>}
 
         <TextInput
-          style={[
-            styles.input,
-            error ? styles.inputError : null
-          ]}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Email"
           value={email}
           onChangeText={(text) => {
@@ -82,10 +79,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
         />
 
         <TextInput
-          style={[
-            styles.input,
-            error ? styles.inputError : null
-          ]}
+          style={[styles.input, error ? styles.inputError : null]}
           placeholder="Password"
           value={password}
           onChangeText={(text) => {

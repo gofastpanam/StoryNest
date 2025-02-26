@@ -119,13 +119,15 @@ export class AuthService {
    */
   private static handleError(error: FirebaseAuthError): CustomAuthError {
     console.log('Handling Firebase error:', error);
-    
+
     const errorMap: { [key: string]: string } = {
       'auth/email-already-in-use': 'This email is already registered.',
       'auth/invalid-email': 'The email address is not valid.',
-      'auth/operation-not-allowed': 'Email/password accounts are not enabled. Please enable them in the Firebase Console.',
+      'auth/operation-not-allowed':
+        'Email/password accounts are not enabled. Please enable them in the Firebase Console.',
       'auth/weak-password': 'The password is too weak.',
-      'auth/configuration-not-found': 'Authentication configuration is missing. Please check Firebase Console settings.',
+      'auth/configuration-not-found':
+        'Authentication configuration is missing. Please check Firebase Console settings.',
       'auth/network-request-failed': 'Network error. Please check your connection.',
     };
 
