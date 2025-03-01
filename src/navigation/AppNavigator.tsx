@@ -8,6 +8,7 @@ import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { ForgotPasswordScreen } from '../screens/auth/ForgotPasswordScreen';
 import { HomeScreen } from '../screens/home/HomeScreen';
+import { StoryGeneratorScreen } from '../screens/story/StoryGeneratorScreen';
 
 import { RootStackParamList } from './types';
 
@@ -29,6 +30,7 @@ export const AppNavigator = () => {
           // Authenticated stack
           <Stack.Group>
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="StoryGenerator" component={StoryGeneratorScreen} />
           </Stack.Group>
         ) : (
           // Non-authenticated stack

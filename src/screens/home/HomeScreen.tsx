@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/types';
 
 type Story = {
   id: string;
   title: string;
   preview: string;
 };
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 const dummyStories: Story[] = [
   {
@@ -23,6 +28,7 @@ const dummyStories: Story[] = [
 
 export const HomeScreen = () => {
   const { user, logout } = useAuth();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const handleLogout = async () => {
     try {
@@ -33,7 +39,7 @@ export const HomeScreen = () => {
   };
 
   const handleCreateStory = () => {
-    console.log('Create story');
+    navigation.navigate('StoryGenerator');
   };
 
   return (
