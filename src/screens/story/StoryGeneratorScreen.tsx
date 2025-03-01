@@ -30,7 +30,7 @@ export const StoryGeneratorScreen = () => {
     try {
       // TODO: Implémenter la génération d'histoire
       console.log('Generating story with params:', storyParams);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulation
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulation
     } catch (error) {
       console.error('Error generating story:', error);
     } finally {
@@ -41,7 +41,7 @@ export const StoryGeneratorScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Create Your Story</Text>
-      
+
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Main Character</Text>
         <TextInput
@@ -82,7 +82,7 @@ export const StoryGeneratorScreen = () => {
         />
       </View>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.generateButton}
         onPress={handleGenerate}
         disabled={isGenerating}
