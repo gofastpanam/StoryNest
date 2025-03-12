@@ -1,4 +1,5 @@
-import axios from 'axios';
+import OpenAI from 'openai';
+import { OPENAI_API_KEY } from '@env';
 
 export interface StoryParams {
   mainCharacter: string;
@@ -14,40 +15,42 @@ export interface GeneratedStory {
   createdAt: Date;
 }
 
+// Serializable version of GeneratedStory for navigation
+export interface SerializableGeneratedStory {
+  title: string;
+  content: string;
+  summary: string;
+  createdAt: string; // Date as ISO string
+}
+
 export class OpenAIService {
-  private static apiKey = process.env.OPENAI_API_KEY;
-  private static baseUrl = 'https://api.openai.com/v1/chat/completions';
+  private static openai = new OpenAI({
+    apiKey: OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
 
   static async generateStory(params: StoryParams): Promise<GeneratedStory> {
     try {
       const prompt = this.createPrompt(params);
-      const response = await axios.post(
-        this.baseUrl,
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content:
-                'You are a creative storyteller who creates engaging stories for different age groups.',
-            },
-            {
-              role: 'user',
-              content: prompt,
-            },
-          ],
-          temperature: 0.7,
-          max_tokens: 500,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.apiKey}`,
-          },
-        }
-      );
 
-      return this.parseResponse(response.data);
+      const completion = await this.openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'You are a creative storyteller who creates engaging stories for different age groups.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+      });
+
+      return this.parseResponse(completion);
     } catch (error) {
       console.error('Error generating story:', error);
       throw new Error('Failed to generate story');
@@ -69,8 +72,8 @@ export class OpenAIService {
       }`;
   }
 
-  private static parseResponse(data: any): GeneratedStory {
-    const content = data.choices[0].message.content;
+  private static parseResponse(completion: any): GeneratedStory {
+    const content = completion.choices[0].message.content;
     try {
       const parsedContent = JSON.parse(content);
       return {
@@ -80,7 +83,7 @@ export class OpenAIService {
         createdAt: new Date(),
       };
     } catch (e) {
-      // Fallback if response is not valid JSON
+      // Fallback if the response is not a valid JSON
       return {
         title: 'Generated Story',
         content: content,

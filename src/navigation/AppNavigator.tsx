@@ -9,7 +9,7 @@ import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { ForgotPasswordScreen } from '../screens/auth/ForgotPasswordScreen';
 import { HomeScreen } from '../screens/home/HomeScreen';
 import { StoryGeneratorScreen } from '../screens/story/StoryGeneratorScreen';
-
+import { StoryViewerScreen } from '../screens/story/StoryViewerScreen';
 import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +31,7 @@ export const AppNavigator = () => {
           <Stack.Group>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="StoryGenerator" component={StoryGeneratorScreen} />
+            <Stack.Screen name="StoryViewer" component={StoryViewerScreen} />
           </Stack.Group>
         ) : (
           // Non-authenticated stack

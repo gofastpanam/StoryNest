@@ -1,3 +1,5 @@
+import { GeneratedStory, SerializableGeneratedStory } from '../services/openai';
+
 export type RootStackParamList = {
   // Auth screens
   Login: undefined;
@@ -7,5 +9,6 @@ export type RootStackParamList = {
   // Main app screens
   Home: undefined;
   StoryGenerator: undefined;
-  // Add other screens here
+  StoryViewer: { story: SerializableGeneratedStory };
+  MyStories: undefined;
 };
