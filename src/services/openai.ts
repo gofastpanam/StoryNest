@@ -17,7 +17,7 @@ export interface GeneratedStory {
 export class OpenAIService {
   private static apiKey = process.env.OPENAI_API_KEY;
   private static baseUrl = 'https://api.openai.com/v1/chat/completions';
-  
+
   static async generateStory(params: StoryParams): Promise<GeneratedStory> {
     try {
       const prompt = this.createPrompt(params);
@@ -28,31 +28,32 @@ export class OpenAIService {
           messages: [
             {
               role: 'system',
-              content: 'You are a creative storyteller who creates engaging stories for different age groups.'
+              content:
+                'You are a creative storyteller who creates engaging stories for different age groups.',
             },
             {
               role: 'user',
-              content: prompt
-            }
+              content: prompt,
+            },
           ],
           temperature: 0.7,
-          max_tokens: 500
+          max_tokens: 500,
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`
-          }
+            Authorization: `Bearer ${this.apiKey}`,
+          },
         }
       );
-      
+
       return this.parseResponse(response.data);
     } catch (error) {
       console.error('Error generating story:', error);
       throw new Error('Failed to generate story');
     }
   }
-  
+
   private static createPrompt(params: StoryParams): string {
     return `Create a story with the following parameters:
       - Main character: ${params.mainCharacter}
@@ -67,7 +68,7 @@ export class OpenAIService {
         "summary": "A brief summary of the story"
       }`;
   }
-  
+
   private static parseResponse(data: any): GeneratedStory {
     const content = data.choices[0].message.content;
     try {
@@ -76,7 +77,7 @@ export class OpenAIService {
         title: parsedContent.title,
         content: parsedContent.content,
         summary: parsedContent.summary,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
     } catch (e) {
       // Fallback if response is not valid JSON
@@ -84,7 +85,7 @@ export class OpenAIService {
         title: 'Generated Story',
         content: content,
         summary: 'A story was generated based on your parameters.',
-        createdAt: new Date()
+        createdAt: new Date(),
       };
     }
   }

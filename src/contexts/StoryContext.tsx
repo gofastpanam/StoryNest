@@ -27,7 +27,7 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const generateStory = async (params: StoryParams): Promise<GeneratedStory> => {
     setIsGenerating(true);
     setError(null);
-    
+
     try {
       const story = await OpenAIService.generateStory(params);
       setCurrentStory(story);
@@ -52,7 +52,7 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isGenerating,
         generateStory,
         clearCurrentStory,
-        error
+        error,
       }}
     >
       {children}
