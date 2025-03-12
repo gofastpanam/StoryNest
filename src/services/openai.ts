@@ -72,14 +72,14 @@ export class OpenAIService {
       }`;
   }
 
-  private static parseResponse(completion: any): GeneratedStory {
-    const content = completion.choices[0].message.content;
+  private static parseResponse(completion: OpenAI.ChatCompletion): GeneratedStory {
+    const content = completion.choices[0].message.content || '';
     try {
       const parsedContent = JSON.parse(content);
       return {
-        title: parsedContent.title,
-        content: parsedContent.content,
-        summary: parsedContent.summary,
+        title: parsedContent.title || 'Generated Story',
+        content: parsedContent.content || '',
+        summary: parsedContent.summary || 'A story was generated based on your parameters.',
         createdAt: new Date(),
       };
     } catch (e) {

@@ -2,13 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Share, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/types';
-import { GeneratedStory } from '../../services/openai';
-import { useStory } from '../../contexts/StoryContext';
 import { useFirestore } from '../../contexts/FirestoreContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StoryViewer'>;
 
-export const StoryViewerScreen: React.FC<Props> = ({ route, navigation }) => {
+export const StoryViewerScreen: React.FC<Props> = ({ route }) => {
   const { story: serializedStory } = route.params;
 
   // Convert ISO string to Date object

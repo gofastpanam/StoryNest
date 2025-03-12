@@ -43,7 +43,7 @@ export const MyStoriesScreen: React.FC<Props> = ({ navigation }) => {
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, loadStories]);
 
   const handleFavoriteToggle = async (story: StoredStory) => {
     try {

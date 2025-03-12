@@ -32,7 +32,7 @@ export class FirestoreService {
         story.createdAt instanceof Date ? story.createdAt : new Date(story.createdAt);
 
       // Create an object without the createdAt property to avoid serialization issues
-      const { createdAt: _, ...storyWithoutDate } = story;
+      const { createdAt: createdAtValue, ...storyWithoutDate } = story;
 
       // Add the createdAt property as a Firestore Timestamp
       const storyToSave = {

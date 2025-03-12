@@ -1,4 +1,4 @@
-import { GeneratedStory, SerializableGeneratedStory } from '../services/openai';
+import { SerializableGeneratedStory } from '../services/openai';
 
 export type RootStackParamList = {
   // Auth screens
