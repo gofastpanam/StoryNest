@@ -28,19 +28,21 @@ export class FirestoreService {
   static async saveStory(story: GeneratedStory, user: User): Promise<string> {
     try {
       // Make sure createdAt is a valid Date object
-      const createdAt =
+      const createdAtDate =
         story.createdAt instanceof Date ? story.createdAt : new Date(story.createdAt);
 
-      // Create an object without the createdAt property to avoid serialization issues
-      const { createdAt: createdAtValue, ...storyWithoutDate } = story;
+      // Extraire les propriétés nécessaires de l'histoire
+      const { title, content, summary } = story;
 
-      // Add the createdAt property as a Firestore Timestamp
+      // Créer l'objet à sauvegarder avec les propriétés Firestore
       const storyToSave = {
-        ...storyWithoutDate,
+        title,
+        content,
+        summary,
         userId: user.uid,
         isFavorite: false,
         tags: [],
-        createdAt: Timestamp.fromDate(createdAt),
+        createdAt: Timestamp.fromDate(createdAtDate),
       };
 
       console.log('Saving story to Firestore:', JSON.stringify(storyToSave, null, 2));

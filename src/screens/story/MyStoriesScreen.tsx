@@ -22,19 +22,19 @@ export const MyStoriesScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'favorites'>('all');
 
-  const loadStories = async () => {
-    setLoading(true);
-    try {
-      const userStories = await getUserStories();
-      setStories(userStories);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to load stories');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const loadStories = async () => {
+      setLoading(true);
+      try {
+        const userStories = await getUserStories();
+        setStories(userStories);
+      } catch (error) {
+        Alert.alert('Error', 'Failed to load stories');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadStories();
 
     // Reload stories when the screen comes into focus
@@ -43,7 +43,7 @@ export const MyStoriesScreen: React.FC<Props> = ({ navigation }) => {
     });
 
     return unsubscribe;
-  }, [navigation, loadStories]);
+  }, [navigation, getUserStories]);
 
   const handleFavoriteToggle = async (story: StoredStory) => {
     try {
