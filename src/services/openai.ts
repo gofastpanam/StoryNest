@@ -62,14 +62,7 @@ export class OpenAIService {
       - Main character: ${params.mainCharacter}
       - Setting: ${params.setting}
       - Theme: ${params.theme}
-      - Age group: ${params.ageGroup}
-      
-      Format your response as JSON with the following structure:
-      {
-        "title": "Story title",
-        "content": "Full story content with paragraphs",
-        "summary": "A brief summary of the story"
-      }`;
+      - Age group: ${params.ageGroup}`;
   }
 
   private static parseResponse(completion: OpenAI.ChatCompletion): GeneratedStory {
