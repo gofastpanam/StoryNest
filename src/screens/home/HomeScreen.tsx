@@ -16,13 +16,8 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 const dummyStories: Story[] = [
   {
     id: '1',
-    title: 'The Magic Forest',
-    preview: 'Deep in the enchanted forest...',
-  },
-  {
-    id: '2',
-    title: 'Space Adventure',
-    preview: 'As the rocket pierced through the atmosphere...',
+    title: 'WELCOME TO STORYNEST',
+    preview: 'Create a new story to start',
   },
 ];
 

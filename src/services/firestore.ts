@@ -27,28 +27,18 @@ export class FirestoreService {
 
   static async saveStory(story: GeneratedStory, user: User): Promise<string> {
     try {
-      // Make sure createdAt is a valid Date object
-      const createdAtDate =
-        story.createdAt instanceof Date ? story.createdAt : new Date(story.createdAt);
-
-      // Extraire les propriétés nécessaires de l'histoire
-      const { title, content, summary } = story;
-
-      // Créer l'objet à sauvegarder avec les propriétés Firestore
+      // Simplifier au maximum
       const storyToSave = {
-        title,
-        content,
-        summary,
+        title: story.title,
+        content: story.content,
+        summary: story.summary,
         userId: user.uid,
         isFavorite: false,
         tags: [],
-        createdAt: Timestamp.fromDate(createdAtDate),
+        createdAt: Timestamp.fromDate(new Date())
       };
-
-      console.log('Saving story to Firestore:', JSON.stringify(storyToSave, null, 2));
-
+  
       const docRef = await addDoc(collection(db, this.STORIES_COLLECTION), storyToSave);
-
       return docRef.id;
     } catch (error) {
       console.error('Error saving story:', error);

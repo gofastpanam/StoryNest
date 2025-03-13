@@ -6,7 +6,7 @@ import { useFirestore } from '../../contexts/FirestoreContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'StoryViewer'>;
 
-export const StoryViewerScreen: React.FC<Props> = ({ route }) => {
+export const StoryViewerScreen: React.FC<Props> = ({ route, navigation }) => {
   const { story: serializedStory } = route.params;
 
   // Convert ISO string to Date object
@@ -21,6 +21,7 @@ export const StoryViewerScreen: React.FC<Props> = ({ route }) => {
     try {
       await saveStory(story);
       Alert.alert('Success', 'Story saved successfully!');
+      navigation.navigate('MyStories');
     } catch (error) {
       Alert.alert('Error', 'Failed to save story. Please try again.');
     }
