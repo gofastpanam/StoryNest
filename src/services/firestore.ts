@@ -35,9 +35,9 @@ export class FirestoreService {
         userId: user.uid,
         isFavorite: false,
         tags: [],
-        createdAt: Timestamp.fromDate(new Date())
+        createdAt: Timestamp.fromDate(new Date()),
       };
-  
+
       const docRef = await addDoc(collection(db, this.STORIES_COLLECTION), storyToSave);
       return docRef.id;
     } catch (error) {

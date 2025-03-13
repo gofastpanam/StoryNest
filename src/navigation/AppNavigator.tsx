@@ -13,7 +13,6 @@ import { StoryViewerScreen } from '../screens/story/StoryViewerScreen';
 import { RootStackParamList } from './types';
 import { MyStoriesScreen } from '../screens/story/MyStoriesScreen';
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppNavigator = () => {
