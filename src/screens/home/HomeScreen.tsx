@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -47,12 +47,11 @@ export const HomeScreen = () => {
       </View>
 
       <ScrollView style={styles.content}>
-        {dummyStories.map((story) => (
-          <View key={story.id} style={styles.storyCard}>
-            <Text style={styles.storyTitle}>{story.title}</Text>
-            <Text style={styles.storyPreview}>{story.preview}</Text>
-          </View>
-        ))}
+      <Image 
+        source={require('./storynest.jpg')} 
+        style={styles.logo} 
+        resizeMode="contain"
+      />
       </ScrollView>
 
       <TouchableOpacity style={styles.createButton} onPress={handleCreateStory}>
@@ -65,7 +64,13 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
+  },
+  logo: {
+    width: 400,
+    height: 700,
+    alignSelf: 'center',
+    marginTop: 5,
   },
   header: {
     flexDirection: 'row',
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   createButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#3b152f',
     padding: 16,
     margin: 16,
     borderRadius: 8,

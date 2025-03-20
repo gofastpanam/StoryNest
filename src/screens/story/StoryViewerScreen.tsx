@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#3b152f',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     marginHorizontal: 8,
   },
   shareButton: {
-    backgroundColor: '#34C759',
+    backgroundColor: '#3b152f',
   },
   buttonText: {
     color: '#fff',
